@@ -4,49 +4,54 @@ title: "Portfolio 1"
 
 > The projects should be numbered consecutively (i.e., in the order in which you began them), and should include for each project a description of the goal, the product (computer program, hand graph, computer graph, etc.), the data, and some interpretation. Reports must be reproducible and of high quality in terms of writing, grammar, presentation, etc.
 
-```{r load-packages, warning = FALSE, message=FALSE}
-library(tidyverse) 
-library(tidyr)
-data(fish_encounters)
-```
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum eget nibh vel est aliquet iaculis at placerat sem. Aenean faucibus iaculis ultricies. Nullam consequat odio in ultricies ullamcorper. Etiam venenatis in est vitae ullamcorper. Nam vitae urna ut dolor rhoncus aliquet at vel neque. Quisque tristique leo finibus nisi interdum, sit amet tempor risus viverra. Donec mollis vulputate sodales. Nunc ornare, leo quis euismod eleifend, eros mi maximus felis, vel varius lacus dui eget nibh. Duis vitae nunc nisl. Donec accumsan aliquam elit, eu fringilla quam pulvinar eget.
-
-Mauris in ligula mauris. Curabitur facilisis pharetra metus eget lobortis. In egestas nibh sit amet faucibus eleifend. Suspendisse imperdiet viverra blandit. Phasellus consectetur tincidunt eros eu facilisis. Quisque maximus, orci eget sodales aliquam, velit lorem semper dolor, nec convallis erat ipsum mattis velit. Pellentesque porttitor, mauris vitae aliquam mattis, metus nisl viverra turpis, vel convallis metus sapien et ex. Nunc consequat ipsum id dolor eleifend, sit amet semper eros sodales. Pellentesque consectetur, dui quis venenatis malesuada, nunc lorem lacinia libero, vitae malesuada dui arcu in augue. Aliquam id sagittis libero. Vestibulum aliquet sagittis libero, non posuere odio molestie ut. Curabitur lacus enim, viverra vel odio non, pretium efficitur elit. Mauris posuere efficitur interdum. Nunc sed bibendum turpis, quis fringilla velit. Phasellus eu lorem lobortis eros molestie laoreet.
+This portfolio entry is investigating the prevalence of substances and mental health issues in suicides across both genders, as it is something related to my major and my subject of interest, that being abnormal psychology. I am interested in looking into more research on the effects of different substances and mental health disorders, and whether specific substances and/or mental health disorders lead to a heightened chance of committing suicide.
 
 
 
 ```{r}
-# Create a barplot of the number of fish encounters by species
-ggplot(data = fish_encounters, aes(x = station, y = seen)) +
-  geom_bar(stat = "identity") +
-  labs(x = "Species", y = "Number of Fish Encounters")
-  
+suicide_data <- data.frame(
+  gender = c("Male", "Male", "Female", "Female"),
+  History_of_substance_abuse = c("Yes", "No", "Yes", "No"),
+  percent_suicides = c(31.5, 68.5, 38.5, 61.5)  # example %
+)
 ```
 
 
-Sed mollis purus faucibus leo finibus, ut pharetra nibh elementum. Nulla id orci lorem. Mauris sollicitudin mi eget tellus vehicula, ut convallis lorem mollis. In blandit nulla diam, a malesuada sem volutpat interdum. Ut elementum elit at velit maximus, ac tempor odio porttitor. Suspendisse lobortis sollicitudin tortor, ut pharetra libero luctus a. Sed hendrerit faucibus metus. Sed rutrum purus vel pellentesque euismod.
-
+Above is the code used for creating the data set itself, along with the data I gathered through thorough investigation.
 
 ```{r}
-# Create a barplot of the number of fish encounters by species
-ggplot(data = fish_encounters, aes(x = station, y = seen)) +
-  geom_bar(stat = "identity") +
-  labs(x = "Species", y = "Number of Fish Encounters") +
-  theme_minimal()
-  
+suicide_data$gender <- factor(suicide_data$gender)
+suicide_data$History_of_substance_abuse <- factor(suicide_data$History_of_substance_abuse,
+                                          levels = c("Yes", "No"))
 ```
 
-Mauris placerat in velit a pharetra. Nulla viverra bibendum lectus, ut lobortis nibh. Aenean malesuada, orci vitae dictum placerat, enim justo aliquet leo, ac tincidunt augue ipsum et mi. Nullam in pharetra metus, nec molestie felis. Duis varius rhoncus pulvinar. Integer semper urna sed tellus rhoncus, vel suscipit odio iaculis. Mauris iaculis neque pellentesque ex convallis venenatis. Sed ultrices euismod fermentum. Ut feugiat risus at turpis tincidunt viverra.
+This step is done to ensure that the "gender: and "History of substance use" are treated as categorical variables by R. 
 
-
+Below is the code which generates the graph we will need to lay out our data analysis in an orderly, easy-to-interpret fashion.
 ```{r}
-# Create a barplot of the number of fish encounters by species
-ggplot(data = fish_encounters, aes(x = station, y = seen)) +
-  geom_bar(stat = "identity") +
-  labs(x = "Species", y = "Number of Fish Encounters") +
-  theme_classic()
+library(ggplot2)
+
+ggplot(suicide_data, 
+       aes(x = gender, 
+           y = percent_suicides, 
+           fill = History_of_substance_abuse)) +
   
+  geom_bar(stat = "identity", position = "dodge") +
+  
+  coord_flip() +
+  
+  scale_fill_manual(values = c("Yes" = "red", "No" = "blue"),
+                    name = "History of Substance Use",
+                    labels = c("No History of Substance Use",
+                               "History of Substance Use")) +
+  
+  labs(title = "Suicide Rates and Substance Use",
+       x = "Gender",
+       y = "Percent of Suicides") +
+  
+  theme_minimal(base_size = 14)
 ```
 
-Donec sagittis suscipit orci in ultrices. Vivamus iaculis eleifend est et dictum. Fusce non urna at lacus dapibus tincidunt ac sed nibh. Donec luctus lectus elit, ac ultrices tortor mollis sit amet. Nulla finibus lacinia arcu. Proin sollicitudin non odio et pulvinar. Maecenas finibus faucibus finibus. Ut elementum metus velit, a sodales sapien commodo et. Vivamus pulvinar, sapien et porta cursus, elit est luctus nisi, eget fringilla odio diam et enim. Sed sodales suscipit bibendum. Morbi ut metus semper, laoreet felis sodales, consequat dolor.
+Here is the graph showing the percent of suicides and whether individuals had a history of substance use or not, prior to committing the act.The data shown by ths graph was provided by a report released by the Centers for Disease Control and Prevention: https://www.cdc.gov/mmwr/volumes/72/ss/pdfs/ss7205a1-h.pdf?
+
