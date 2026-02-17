@@ -1,0 +1,57 @@
+---
+title: "Portfolio 1"
+---
+
+> The projects should be numbered consecutively (i.e., in the order in which you began them), and should include for each project a description of the goal, the product (computer program, hand graph, computer graph, etc.), the data, and some interpretation. Reports must be reproducible and of high quality in terms of writing, grammar, presentation, etc.
+
+
+This portfolio entry is investigating the prevalence of substances and mental health issues in suicides across both genders, as it is something related to my major and my subject of interest, that being abnormal psychology. I am interested in looking into more research on the effects of different substances and mental health disorders, and whether specific substances and/or mental health disorders lead to a heightened chance of committing suicide.
+
+
+
+```{r}
+suicide_data <- data.frame(
+  gender = c("Male", "Male", "Female", "Female"),
+  History_of_substance_abuse = c("Yes", "No", "Yes", "No"),
+  percent_suicides = c(31.5, 68.5, 38.5, 61.5)  # example %
+)
+```
+
+
+Above is the code used for creating the data set itself, along with the data I gathered through thorough investigation.
+
+```{r}
+suicide_data$gender <- factor(suicide_data$gender)
+suicide_data$History_of_substance_abuse <- factor(suicide_data$History_of_substance_abuse,
+                                          levels = c("Yes", "No"))
+```
+
+This step is done to ensure that the "gender: and "History of substance use" are treated as categorical variables by R. 
+
+Below is the code which generates the graph we will need to lay out our data analysis in an orderly, easy-to-interpret fashion.
+```{r}
+library(ggplot2)
+
+ggplot(suicide_data, 
+       aes(x = gender, 
+           y = percent_suicides, 
+           fill = History_of_substance_abuse)) +
+  
+  geom_bar(stat = "identity", position = "dodge") +
+  
+  coord_flip() +
+  
+  scale_fill_manual(values = c("Yes" = "red", "No" = "blue"),
+                    name = "History of Substance Use",
+                    labels = c("No History of Substance Use",
+                               "History of Substance Use")) +
+  
+  labs(title = "Suicide Rates and Substance Use",
+       x = "Gender",
+       y = "Percent of Suicides") +
+  
+  theme_minimal(base_size = 14)
+```
+
+Here is the graph showing the percent of suicides and whether individuals had a history of substance use or not, prior to committing the act.The data shown by ths graph was provided by a report released by the Centers for Disease Control and Prevention: https://www.cdc.gov/mmwr/volumes/72/ss/pdfs/ss7205a1-h.pdf?
+

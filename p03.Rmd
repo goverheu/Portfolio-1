@@ -1,5 +1,56 @@
 ---
 title: "Portfolio 3"
+Date: "2/14/2026
 ---
 
-> The projects should be numbered consecutively (i.e., in the order in which you began them), and should include for each project a description of the goal, the product (computer program, hand graph, computer graph, etc.), the data, and some interpretation. Reports must be reproducible and of high quality in terms of writing, grammar, presentation, etc.
+This portfolio entry will be a follow up to what I did in my second portfolio, as lab 5 was to lab 4. I will be using the same data sets that I used in my previous portfolio for this one and will be attempting to use the haversine function to basically replicate what we had to do in the third lab. I will essentially be showing that states which are close to states with high murder rates, also tend to have high murder rates (this is the best idea I could come up with where I could effectively utilize the haversine function for the data I am trying to process).
+
+UPDATE: Upon further experimentation with the haversine function, it would be extremely difficult for me to use it with the data set I have, as the La Quinta / Denny's situation involves two different sets of data which are completely separate from each other, while my two data sets are related such that one has locations that are in the states which are in the other data set (this is the best I am able to explain this, I know it may sound a bit confusing). With that said, I will just plot a graph showing the states within the top 25% of US murder rates.
+
+
+Below you can find a clear, comprehensive outline of the steps I took to do this:
+```{r}
+#1. We load our required packages:
+library(tidyverse)
+library(sf)
+library(tigris)
+library(viridis)
+
+#2. We load our US states data file so we are able to generate a map:
+states_map <- states(cb = TRUE, resolution = "20m") %>%
+  st_transform(4326) %>%
+  mutate(NAME = tolower(NAME), NAME = trimws(NAME))
+
+#3. We load the crime statistics data set:
+crime_df <- read_csv(
+  "https://gist.githubusercontent.com/ncavestany/8dface70f6bc9e576c6847bb7ca09dc3/raw/state_crime.csv"
+)
+
+#4. We filter for murder data ONLY:
+murder_2019 <- crime_df %>%
+  filter(Year == 2019, State != "United States") %>%
+  select(State, murder_rate = Data.Rates.Violent.Murder) %>%
+  mutate(State = tolower(trimws(State)))
+
+#5. We then join the murder rates to the US map:
+crime_map <- states_map %>%
+  left_join(murder_2019, by = c("NAME" = "State"))
+
+
+#6. Here is a new skill I learned through personal exploration of the various functions of R. From my understanding, the quantile function is one of the many standard statistics functions R has to offer. It allows you to calculate quartiles, percentages, and other statistics of that nature. In this case, we are using it to separate the top 25% of States regarding murder rate:
+threshold <- quantile(crime_map$murder_rate, 0.75, na.rm = TRUE)
+crime_map <- crime_map %>%
+  mutate(top_state = ifelse(!is.na(murder_rate) & murder_rate > threshold, TRUE, FALSE))
+
+#7. Finally, we plot the final product:
+ggplot(crime_map) +
+  geom_sf(aes(fill = top_state), color = "white") +
+  scale_fill_manual(values = c("FALSE" = "lightgray", "TRUE" = "red"),
+                    name = "Top 25% Murder Rate") +
+  labs(
+    title = "US Murder Rate by State — 2019",
+    caption = "Top 25% states highlighted in red"
+  ) +
+  theme_minimal()
+```
+
