@@ -1,6 +1,6 @@
 ---
 title: "Portfolio 3"
-Date: "2/14/2026
+Date: "2/14/2026"
 ---
 
 This portfolio entry will be a follow up to what I did in my second portfolio, as lab 5 was to lab 4. I will be using the same data sets that I used in my previous portfolio for this one and will be attempting to use the haversine function to basically replicate what we had to do in the third lab. I will essentially be showing that states which are close to states with high murder rates, also tend to have high murder rates (this is the best idea I could come up with where I could effectively utilize the haversine function for the data I am trying to process).
@@ -53,4 +53,4 @@ ggplot(crime_map) +
   ) +
   theme_minimal()
 ```
-
+Regarding an analysis of the map, it seems as if many of the southern US states have high murder rates, including others such as Missouri (likely due to St. Louis), Illinois (likely due to Chicago), and New Mexico (possibly due to the prevalence of drug related crime and Albuquerque). Interestingly enough, Alaska also made the cut, which I would be interested in doing more research into the fact to find out why.
