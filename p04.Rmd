@@ -2,4 +2,58 @@
 title: "Portfolio 4"
 ---
 
-> The projects should be numbered consecutively (i.e., in the order in which you began them), and should include for each project a description of the goal, the product (computer program, hand graph, computer graph, etc.), the data, and some interpretation. Reports must be reproducible and of high quality in terms of writing, grammar, presentation, etc.
+In this portfolio, I am going to do something a little simpler compared to what I attempted last week in my third portfolio with the haversine function. I am going to create a plot displaying the murder rate for the US states with the five highest murder rates, from 2009 to 2019.
+
+We prepare our packages here:
+```{r}
+library(tidyverse)
+```
+
+And our data set as well:
+```{r}
+crime_df <- read_csv(
+  "https://gist.githubusercontent.com/ncavestany/8dface70f6bc9e576c6847bb7ca09dc3/raw/state_crime.csv"
+)
+```
+
+
+
+First, we isolate the 5 states with the highest murder rate:
+```{r}
+top_states <- crime_df %>%
+  group_by(State) %>%
+  summarize(avg_murder = mean(Data.Rates.Violent.Murder, na.rm = TRUE)) %>%
+  arrange(desc(avg_murder)) %>%
+  slice_head(n = 5) %>%
+  pull(State)
+```
+
+We then filter for the top states:
+```{r}
+top_data <- crime_df %>%
+  filter(State %in% top_states)
+
+```
+
+Next, we filter the data set for just those states:
+```{r}
+top_data <- crime_df %>% 
+  filter(State %in% top_states)
+```
+
+
+Now, we are able to successfully plot a graph showing the trend of each state's murders from 2009 - 2019:
+```{r}
+ggplot(top_data, aes(x = Year, y = Data.Rates.Violent.Murder, color = State)) +
+  geom_line(size = 1.2) +
+  geom_point(size = 2) +
+  theme_minimal() +
+  labs(
+    title = "Murder Rate for the States with the National Murder Rate (2009-2019)",
+    x = "Year",
+    y = "Murder Rate",
+    color = "State"
+  )
+```
+Upon analysis of this graph, Washington D.C> has the highest murder rate out of all of them by a significant margin, likely due to its high population and population density. Louisiana comes in second with Mississippi following closely behind; Missouri comes in at fourth and Maryland at fifth. Washington D.C., Mississippi, Maryland, and Louisiana seem to be on an upward trend at various levels of intensity, while Missouri is the only one exhibiting a downwards trend.
+

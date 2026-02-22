@@ -295,13 +295,73 @@ $(document).ready(function () {
 </div>
 
 
-<blockquote>
-<p>The projects should be numbered consecutively (i.e., in the order in
-which you began them), and should include for each project a description
-of the goal, the product (computer program, hand graph, computer graph,
-etc.), the data, and some interpretation. Reports must be reproducible
-and of high quality in terms of writing, grammar, presentation, etc.</p>
-</blockquote>
+<p>In this portfolio, I am going to do something a little simpler
+compared to what I attempted last week in my third portfolio with the
+haversine function. I am going to create a plot displaying the murder
+rate for the US states with the five highest murder rates, from 2009 to
+2019.</p>
+<p>We prepare our packages here:</p>
+<pre class="r"><code>library(tidyverse)</code></pre>
+<pre><code>## ── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
+## ✔ dplyr     1.1.4     ✔ readr     2.1.6
+## ✔ forcats   1.0.1     ✔ stringr   1.6.0
+## ✔ ggplot2   4.0.1     ✔ tibble    3.3.1
+## ✔ lubridate 1.9.4     ✔ tidyr     1.3.2
+## ✔ purrr     1.2.1     
+## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+## ✖ dplyr::filter() masks stats::filter()
+## ✖ dplyr::lag()    masks stats::lag()
+## ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
+<p>And our data set as well:</p>
+<pre class="r"><code>crime_df &lt;- read_csv(
+  &quot;https://gist.githubusercontent.com/ncavestany/8dface70f6bc9e576c6847bb7ca09dc3/raw/state_crime.csv&quot;
+)</code></pre>
+<pre><code>## Rows: 624 Columns: 21
+## ── Column specification ────────────────────────────────────────────────────────
+## Delimiter: &quot;,&quot;
+## chr  (1): State
+## dbl (20): Year, Data.Population, Data.Rates.Property.All, Data.Rates.Propert...
+## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<p>First, we isolate the 5 states with the highest murder rate:</p>
+<pre class="r"><code>top_states &lt;- crime_df %&gt;%
+  group_by(State) %&gt;%
+  summarize(avg_murder = mean(Data.Rates.Violent.Murder, na.rm = TRUE)) %&gt;%
+  arrange(desc(avg_murder)) %&gt;%
+  slice_head(n = 5) %&gt;%
+  pull(State)</code></pre>
+<p>We then filter for the top states:</p>
+<pre class="r"><code>top_data &lt;- crime_df %&gt;%
+  filter(State %in% top_states)</code></pre>
+<p>Next, we filter the data set for just those states:</p>
+<pre class="r"><code>top_data &lt;- crime_df %&gt;% 
+  filter(State %in% top_states)</code></pre>
+<p>Now, we are able to successfully plot a graph showing the trend of
+each state’s murders from 2009 - 2019:</p>
+<pre class="r"><code>ggplot(top_data, aes(x = Year, y = Data.Rates.Violent.Murder, color = State)) +
+  geom_line(size = 1.2) +
+  geom_point(size = 2) +
+  theme_minimal() +
+  labs(
+    title = &quot;Murder Rate for the States with the National Murder Rate (2009-2019)&quot;,
+    x = &quot;Year&quot;,
+    y = &quot;Murder Rate&quot;,
+    color = &quot;State&quot;
+  )</code></pre>
+<pre><code>## Warning: Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.
+## ℹ Please use `linewidth` instead.
+## This warning is displayed once per session.
+## Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
+## generated.</code></pre>
+<p><img src="p04_files/figure-html/unnamed-chunk-6-1.png" alt="" width="672" />
+Upon analysis of this graph, Washington D.C&gt; has the highest murder
+rate out of all of them by a significant margin, likely due to its high
+population and population density. Louisiana comes in second with
+Mississippi following closely behind; Missouri comes in at fourth and
+Maryland at fifth. Washington D.C., Mississippi, Maryland, and Louisiana
+seem to be on an upward trend at various levels of intensity, while
+Missouri is the only one exhibiting a downwards trend.</p>
 
 
 
