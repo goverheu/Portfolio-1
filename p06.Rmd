@@ -29,4 +29,4 @@ ggplot() +
     plot.background = element_rect(fill = "navy", color = NA)
   )
 ```
-It may not be the greatest looking, but I hope that it is sufficient enough to brighten your day a little bit. Thank you for your hard work Prof. Mason, and I wish you the best of luck from now onwards. I will definitely make sure to reach out to you if I have any other coding questions for future classes. Thanks again!
+It may not be the greatest looking, but I hope that it is sufficient enough to brighten your day a little bit. Thank you for your hard work Prof. Mason, and I wish you the best of luck from now on. I will definitely make sure to reach out to you if I have any other coding questions for future classes. Thanks again!
