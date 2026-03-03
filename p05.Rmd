@@ -2,4 +2,53 @@
 title: "Portfolio 5"
 ---
 
-> The projects should be numbered consecutively (i.e., in the order in which you began them), and should include for each project a description of the goal, the product (computer program, hand graph, computer graph, etc.), the data, and some interpretation. Reports must be reproducible and of high quality in terms of writing, grammar, presentation, etc.
+First, always run your packages:
+```{r}
+library(ggplot2)
+library(dplyr)
+```
+
+For Portfolio 5, I am going to utilize the skills I learned in lab 6, question 11 to make a donut plot (at least that's what I call it, it might be called something else officially). I will still be using the crime statistic data set. I do want to say that these statistical calculations will not be exact because I will be taking data from sources other than the crime data set, in order to complete this plot:
+
+The first step will be to calculate the the percentage of national murders committed for each age group. For the sake of convenience, I will just simply get this data from a reliable source on the internet. I will also be using the same age ranges we used in lab 6: 18-44, 45-64, and 65+.
+
+According to the United States Federal Bureau of Investigation (FBI), the age stats for national murders are as follows:
+  - 18-44: 65%
+      - Of these perpetrators, 89% are male and 11% are female.
+  - 45-64: 25%
+      - of these perpetrators, 90% are male and 10% are female.
+  - 65+: 10%
+      - of these perpetrators, 87% are male and 13% are female.
+These values are only approximations, but should still be deemed as reliable due to the source they are from.
+
+Now for the actual coding. First we create the data set:
+```{r}
+df <- data.frame(
+  age_group = rep(c("18-44", "45-64", "65+"), each = 2),
+  sex = rep(c("Male", "Female"), times = 3),
+  percent = c(
+    90, 10,   # 18-44
+    89, 11,   # 45-64
+    87, 13    # 65+
+  )
+)
+```
+
+We then are able to create the donut chart:
+```{r}
+ggplot(df, aes(x = 2, y = percent, fill = sex)) +
+  geom_bar(stat = "identity", width = 1, color = "white") +
+  coord_polar(theta = "y") +
+  xlim(0.5, 2.5) +   # controls donut hole size
+  facet_wrap(~age_group) +
+  labs(
+    title = "Gender Distribution by Age Group",
+    fill = "Sex"
+  ) +
+  theme_void() +
+  theme(
+    strip.text = element_text(size = 12),
+    legend.position = "right"
+  )
+```
+Upon analysis of this graph, it is clear that males dominate the murder crime statistic. This raises questions as to why this is - does it have something to do with a evolutionary primal instinct? Are they more vulnerable to certain life factors which would drive them to commit such a horrible act? Or is it related to an explanation on a biological or chemical level? Perhaps it is a combination of multiple factors. Upon further investigation either directly or through meta analysis of other studies, it would certainly be doable to find an explanation for these data statistics.
