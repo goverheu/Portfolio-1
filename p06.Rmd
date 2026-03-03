@@ -2,4 +2,31 @@
 title: "Portfolio 6"
 ---
 
-> The projects should be numbered consecutively (i.e., in the order in which you began them), and should include for each project a description of the goal, the product (computer program, hand graph, computer graph, etc.), the data, and some interpretation. Reports must be reproducible and of high quality in terms of writing, grammar, presentation, etc.
+For my final portfolio, I would like to do something special as a thank you to Dr. Mason for her hard work in putting this class together on such short notice, as well as guiding through the many hardships of coding. Specifically, I would like to use some of my personal skills as well as things I have learned from online research, to create a thank you message in R.
+
+As learned at the beginning of the semester, always load the necessary packages:
+```{r}
+library(ggplot2)
+```
+
+I wanted to make this graph as glamorous as my knowledge on coding allows me, with little research from online sources. I decided to go for something of a "celebration gradient" representative of the completion of another semester, and to express my gratitude towards Prof. Mason effectively. here is the result:
+
+```{r}
+ggplot() +
+  annotate("text", 0.5, 0.55,
+           label = "Thank you",
+           size = 14,
+           color = "gold",
+           fontface = "bold") +
+  annotate("text", 0.5, 0.45,
+           label = "Dr. Mason!",
+           size = 16,
+           color = "red",
+           fontface = "bold") +
+  theme_void() +
+  xlim(0, 1) + ylim(0, 1) +
+  theme(
+    plot.background = element_rect(fill = "navy", color = NA)
+  )
+```
+It may not be the greatest looking, but I hope that it is sufficient enough to brighten your day a little bit. Thank you for your hard work Prof. Mason, and I wish you the best of luck from now onwards. I will definitely make sure to reach out to you if I have any other coding questions for future classes. Thanks again!
