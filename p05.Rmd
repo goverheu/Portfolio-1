@@ -3,10 +3,12 @@ title: "Portfolio 5"
 ---
 
 First, always run your packages:
+
 ```{r}
 library(ggplot2)
 library(dplyr)
 ```
+
 
 For Portfolio 5, I am going to utilize the skills I learned in lab 6, question 11 to make a donut plot (at least that's what I call it, it might be called something else officially). I will still be using the crime statistic data set. I do want to say that these statistical calculations will not be exact because I will be taking data from sources other than the crime data set, in order to complete this plot:
 
