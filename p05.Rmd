@@ -22,6 +22,7 @@ According to the United States Federal Bureau of Investigation (FBI), the age st
 These values are only approximations, but should still be deemed as reliable due to the source they are from.
 
 Now for the actual coding. First we create the data set:
+
 ```{r}
 df <- data.frame(
   age_group = rep(c("18-44", "45-64", "65+"), each = 2),
@@ -35,6 +36,7 @@ df <- data.frame(
 ```
 
 We then are able to create the donut chart:
+
 ```{r}
 ggplot(df, aes(x = 2, y = percent, fill = sex)) +
   geom_bar(stat = "identity", width = 1, color = "white") +
@@ -51,4 +53,5 @@ ggplot(df, aes(x = 2, y = percent, fill = sex)) +
     legend.position = "right"
   )
 ```
+
 Upon analysis of this graph, it is clear that males dominate the murder crime statistic. This raises questions as to why this is - does it have something to do with a evolutionary primal instinct? Are they more vulnerable to certain life factors which would drive them to commit such a horrible act? Or is it related to an explanation on a biological or chemical level? Perhaps it is a combination of multiple factors. Upon further investigation either directly or through meta analysis of other studies, it would certainly be doable to find an explanation for these data statistics.
